@@ -23,6 +23,8 @@ const kalutEndpoint = `${cuacaUrl}Prov=17&NamaProv=Kalimantan%20Utara`
 const malukuEndpoint = `${cuacaUrl}Prov=20&NamaProv=Maluku`
 
 function dataCuaca(title,endpoint,req,res){
+    const date = new Date()
+    const hours = date.getDate()
     request(`${baseUrl}${endpoint}`,(err,response,body)=>{
         if(err || response.statusCode !== 200){
             res.send(`${err.message} ${response.statusCode}`)
@@ -35,10 +37,14 @@ function dataCuaca(title,endpoint,req,res){
 
             element.each(function() {
                 nama_kota = $(this).find('td:nth-child(1)').text()
-                cuaca_malam = $(this).find('td:nth-child(2)>span').text()
-                cuaca_dini_hari = $(this).find('td:nth-child(3)').text()
-                suhu = $(this).find('td:nth-child(4)').text()
-                kelembapan = $(this).find('td:nth-child(5)').text()
+                cuaca_dini_hari = $(this).find('td:nth-child(2)').text()
+                suhu = $(this).find('td:nth-child(3)').text()
+                kelembapan = $(this).find('td:nth-child(4)').text()
+                // cuaca_malam = $(this).find('td:nth-child(2)>span').text()
+                // cuaca_dini_hari = $(this).find('td:nth-child(3)').text()
+                // suhu = $(this).find('td:nth-child(4)').text()
+                // kelembapan = $(this).find('td:nth-child(5)').text()
+                
 
                 daftar_kota.push({nama_kota,cuaca:{cuaca_malam,cuaca_dini_hari},suhu,kelembapan})
             })
