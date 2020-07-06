@@ -6,6 +6,7 @@ const router = require('./routers/routes')
 const handleNotFound = require('./routers/handleError').notFoundRoute
 
 app.use('/api',router,handleNotFound)
+app.use(express.static('./public'))
 app.listen(port, function(){
     console.log('listening on port ' + port)
 })
