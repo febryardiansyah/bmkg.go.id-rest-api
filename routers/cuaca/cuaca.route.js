@@ -21,10 +21,15 @@ const bengkuluEndpoint = `${cuacaUrl}Prov=05&NamaProv=Bengkulu`
 const kalselEndpoint = `${cuacaUrl}Prov=14&NamaProv=Kalimantan%20Selatan`
 const kalutEndpoint = `${cuacaUrl}Prov=17&NamaProv=Kalimantan%20Utara`
 const malukuEndpoint = `${cuacaUrl}Prov=20&NamaProv=Maluku`
+const nttEndpoint = `${cuacaUrl}Prov=23&NamaProv=Nusa%20Tenggara%20Timur`
+const riauEndpoint = `${cuacaUrl}Prov=26&NamaProv=Riau`
+const sultengEndpoint = `${cuacaUrl}Prov=29&NamaProv=Sulawesi%20Tengah`
+const sumbarEndpoint = `${cuacaUrl}Prov=32&NamaProv=Sumatera%20Barat`
+const bangkaBelitungEndpoint = `${cuacaUrl}Prov=03&NamaProv=Bangka%20Belitung`
 
 function dataCuaca(title,endpoint,req,res){
     const date = new Date()
-    const hours = date.getDate()
+    const hours = date.getHours()
     request(`${baseUrl}${endpoint}`,(err,response,body)=>{
         if(err || response.statusCode !== 200){
             res.send(`${err.message} ${response.statusCode}`)
@@ -37,9 +42,11 @@ function dataCuaca(title,endpoint,req,res){
 
             element.each(function() {
                 nama_kota = $(this).find('td:nth-child(1)').text()
-                cuaca_dini_hari = $(this).find('td:nth-child(2)').text()
-                suhu = $(this).find('td:nth-child(3)').text()
-                kelembapan = $(this).find('td:nth-child(4)').text()
+                cuaca_malam = hours >= 00 && hours<18?$(this).find('td:nth-child(2)').text():null 
+                cuaca_dini_hari = hours >= 00 && hours<18?$(this).find('td:nth-child(3)').text():$(this).find('td:nth-child(2)').text()
+                suhu = hours >= 00 && hours<18?$(this).find('td:nth-child(4)').text():$(this).find('td:nth-child(3)').text()
+                kelembapan =  hours >= 00 && hours<18?$(this).find('td:nth-child(5)').text():$(this).find('td:nth-child(4)').text()
+                
                 // cuaca_malam = $(this).find('td:nth-child(2)>span').text()
                 // cuaca_dini_hari = $(this).find('td:nth-child(3)').text()
                 // suhu = $(this).find('td:nth-child(4)').text()
@@ -140,11 +147,20 @@ module.exports = {
         },
         cuaca_maluku:function(req,res){
             dataCuaca('Cuaca Maluku',malukuEndpoint,req,res)
-        }
+        },
+        cuaca_ntt:function(req,res){
+            dataCuaca('Cuaca Nusa Tenggara Timur',nttEndpoint,req,res)
+        },
+        cuaca_riau:function(req,res){
+            dataCuaca('Cuaca Riau',riauEndpoint,req,res)
+        },
+        cuaca_sulteng:function(req,res){
+            dataCuaca('Cuaca Sulawesi Tenggara',sultengEndpoint,req,res)
+        },
+        cuaca_sumbar:function(req,res){
+            dataCuaca('Cuaca Sumatra Barat',sumbarEndpoint,req,res)
+        },
+        cuaca_bangkabelitung:function(req,res){
+            dataCuaca('Cuaca Bangka Belitung',bangkaBelitungEndpoint,req,res)
+        },
 }
-
-
-// module.exports = {cuaca,cuaca_jakarta,cuaca_aceh,cuaca_banten,
-//     cuaca_jabar,cuaca_jateng,cuaca_jatim,
-//     cuaca_kalbar
-// }
